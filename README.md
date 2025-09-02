@@ -1,9 +1,9 @@
 **Ownership & Contact**
 
-- Owner/Organization: CodeDeX
-- Email: splashdexstudios@gmail.com
+- Owner/Organization: CodeDeX Labs
+- Email: hello@splashdexstudios.com
 - Tel: +233533365712
-- Copyright: © 2025 CodeDeX
+- Copyright: © 2025 CodeDeX Labs
 
 <h1 align=center> Firetask : a shared todolist PWA</h1>
 
@@ -52,7 +52,7 @@ npm install @capacitor/core @capacitor/cli
 ### Running
 
 ```sh
-git clone https://github.com/CodeDeX/PlanMyLife.git
+git clone https://github.com/SplashCodeDex/PlanMyLife.git
 cd todoList
 npm install
 ionic serve

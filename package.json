@@ -1,8 +1,8 @@
 {
   "name": "todoList",
   "version": "0.0.1",
-  "author": "CodeDeX <splashdexstudios@gmail.com> (+233533365712)",
-  "homepage": "https://github.com/CodeDeX/PlanMyLife",
+  "author": "CodeDeX Labs <hello@splashdexstudios.com> (+233533365712)",
+  "homepage": "https://github.com/SplashCodeDex/PlanMyLife",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -76,5 +76,5 @@
     "tslint": "~6.1.0",
     "typescript": "~3.9.5"
   },
-  "description": "An Ionic project.\n\nOwnership & Contact:\n- Owner/Organization: CodeDeX\n- Email: splashdexstudios@gmail.com\n- Tel: +233533365712\n- Copyright: © 2025 CodeDeX"
+  "description": "An Ionic project.\n\nOwnership & Contact:\n- Owner/Organization: CodeDeX Labs\n- Email: hello@splashdexstudios.com\n- Tel: +233533365712\n- Copyright: © 2025 CodeDeX Labs"
 }

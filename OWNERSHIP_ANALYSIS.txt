@@ -1,29 +1,49 @@
-Ownership details extracted from https://github.com/CodeDeX/DeXDo.git:
+# OWNERSHIP ANALYSIS REPORT
 
-- Owner/Organization: CodeDeX
-- Main contributor: CodeDeX (GitHub user)
-- License: MIT License (mentioned in README, LICENSE file updated)
-- No explicit author, email, or copyright
-- No organization or contact in pubspec.yaml or README
-- Contributors: CodeDeX, google-labs-jules[bot]
-- No explicit copyright headers
+## Source Repository: https://github.com/SplashCodeDex/DeXDo.git
+**Project Type:** Flutter Mobile Application (DeXDo - Todo App)
 
-New ownership details to be applied to this project:
-- Owner/Organization: CodeDeX
-- Email: splashdexstudios@gmail.com
-- Tel: +233533365712
-- Copyright: © 2025 CodeDeXls extracted from https://github.com/CodeDeX/DeXdo.git:
+### Git Contributors Analysis:
+- **CodeDeX** <splashdexstudios@gmail.com> - 47 commits (Primary Contributor)
+- **CodeDex👤** <94280376+SplashCodeDex@users.noreply.github.com> - 7 commits (Secondary Contributor)
+- **google-labs-jules[bot]** <161369871+google-labs-jules[bot]@users.noreply.github.com> - 1 commit (Bot)
 
-- Owner/Organization: CodeDeX
-- Main contributor: CodeDeX (GitHub user)
-- License: MIT License (mentioned in README, LICENSE file updated)
-- No explicit author, email, or copyright
-- No organization or contact in pubspec.yaml or README
-- Contributors: CodeDeX, google-labs-jules[bot]
-- No explicit copyright headers
+### Ownership Details from Source:
+- **Project Name:** dexdo
+- **Description:** "A new Flutter project."
+- **Version:** 1.0.0+1
+- **License:** MIT (mentioned in README, but LICENSE file not present)
+- **Repository URL:** https://github.com/SplashCodeDex/DeXDo.git
 
-New ownership details to be applied to this project:
-- Owner/Organization: CodeDeX
-- Email: splashdexstudios@gmail.com
-- Tel: +233533365712
-- Copyright: © 2025 CodeDeX
+### Key Findings:
+1. **Primary Owner:** CodeDeX with email splashdexstudios@gmail.com
+2. **GitHub Username:** SplashCodeDex (appears in secondary contributor and repo URL)
+3. **Technology Stack:** Flutter/Dart (different from current Ionic/Angular project)
+4. **No explicit ownership metadata** in pubspec.yaml or other config files
+
+## Current Project: DeXdo-Plan_Your_Life
+**Project Type:** Ionic/Angular PWA (Firetask - Shared Todo List)
+
+### Current Ownership Details:
+- **Owner:** CodeDeX
+- **Email:** splashdexstudios@gmail.com
+- **Phone:** +233533365712
+- **Copyright:** © 2025 CodeDeX
+- **Homepage:** https://github.com/CodeDeX/PlanMyLife
+
+### External Dependencies Identified:
+1. **Firebase Project:** todolist-app-e908c
+2. **Google OAuth Client ID:** 917146175999-c82qs0tbr1ilqoefijg0erq2f3tfnvq7.apps.googleusercontent.com
+3. **Institutional Package IDs:** com.m2gi.todolist, fr.m2gi.todolist
+4. **Live Demo URLs:** https://todolist-app-e908c.firebaseapp.com
+
+### Analysis Summary:
+Both repositories show consistent ownership by CodeDeX/splashdexstudios@gmail.com. The source repository (DeXDo) is a Flutter implementation, while the current project is an Ionic/Angular implementation of a similar todo application. The current project contains several external dependencies that would need updating for full ownership transfer.
+
+### Recommendations:
+1. Update all GitHub repository URLs to SplashCodeDex
+2. Create new Firebase project and update configuration
+3. Generate new Google OAuth credentials
+4. Update package IDs to non-institutional identifiers
+5. Update live demo URLs to new Firebase hosting
+6. Maintain consistent ownership metadata across all files
