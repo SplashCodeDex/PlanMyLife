@@ -1,0 +1,29 @@
+Ownership details extracted from https://github.com/CodeDeX/DeXDo.git:
+
+- Owner/Organization: CodeDeX
+- Main contributor: CodeDeX (GitHub user)
+- License: MIT License (mentioned in README, LICENSE file updated)
+- No explicit author, email, or copyright
+- No organization or contact in pubspec.yaml or README
+- Contributors: CodeDeX, google-labs-jules[bot]
+- No explicit copyright headers
+
+New ownership details to be applied to this project:
+- Owner/Organization: CodeDeX
+- Email: splashdexstudios@gmail.com
+- Tel: +233533365712
+- Copyright: © 2025 CodeDeXls extracted from https://github.com/CodeDeX/DeXdo.git:
+
+- Owner/Organization: CodeDeX
+- Main contributor: CodeDeX (GitHub user)
+- License: MIT License (mentioned in README, LICENSE file updated)
+- No explicit author, email, or copyright
+- No organization or contact in pubspec.yaml or README
+- Contributors: CodeDeX, google-labs-jules[bot]
+- No explicit copyright headers
+
+New ownership details to be applied to this project:
+- Owner/Organization: CodeDeX
+- Email: splashdexstudios@gmail.com
+- Tel: +233533365712
+- Copyright: © 2025 CodeDeX

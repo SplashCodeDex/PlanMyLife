@@ -1,0 +1,97 @@
+<ion-app>
+  <ion-menu class="" side="start" menuId="main-menu" contentId="main">
+    <ion-header class="yellow-menu-gradient">
+      <div class="logo-section">
+        <div class="logo-section__wrapper">
+          <ion-menu-toggle>
+            <img
+              class="logo-section__img"
+              [src]="
+                this.authService.getCurrentUser()?.photoURL
+                  ? this.authService.getCurrentUser()?.photoURL
+                  : 'https://images.assetsdelivery.com/compings_v2/2nix/2nix1408/2nix140800145.jpg'
+              "
+              [routerLink]="['/profil']"
+            />
+          </ion-menu-toggle>
+          <ion-title class="logo-section__name">{{
+            this.authService.getCurrentUser()?.displayName
+              ? this.authService.getCurrentUser()?.displayName.split(" ")[0]
+              : "N/A"
+          }}</ion-title>
+        </div>
+        <div></div>
+      </div>
+    </ion-header>
+    <ion-content>
+      <ion-list class="ion-margin-vertical">
+        <!------ HOME ------>
+        <ion-menu-toggle>
+          <ion-item lines="none" [routerLink]="['/home']">
+            <ion-icon class="ion-margin-start" name="home-outline"></ion-icon>
+            <ion-label class="ion-margin-start">Home</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+        <!------ PROFILE ------>
+        <ion-menu-toggle>
+          <ion-item lines="none" [routerLink]="['/profil']">
+            <ion-icon class="ion-margin-start" name="person-outline"></ion-icon>
+            <ion-label class="ion-margin-start">Profile</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+        <!------ SETTINGS ------>
+        <ion-menu-toggle>
+          <ion-item lines="none" [routerLink]="['/settings']">
+            <ion-icon
+              class="ion-margin-start"
+              name="settings-outline"
+            ></ion-icon>
+            <ion-label class="ion-margin-start">Settings</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+    </ion-content>
+    <!------ LOGOUT ------>
+    <ion-footer style="margin-bottom: 35px">
+      <ion-button
+        class="logout"
+        color="danger"
+        expand="block"
+        (click)="this.authService.logout()"
+      >
+        <ion-icon class="ion-margin-start" name="log-out-outline"></ion-icon>
+        <ion-label class="text">Logout</ion-label>
+      </ion-button>
+      <ion-label
+        class="github-ref"
+        color="medium"
+        (click)="openBrowser('https://github.com/CodeDeX/PlanMyLife')"
+      >
+        <ion-icon
+          style="font-size: x-large; margin-bottom: -5px"
+          name="logo-github"
+        ></ion-icon>
+        CodeDeX
+      </ion-label>
+      <ion-label
+        color="medium"
+        style="
+          font-size: small;
+          display: block;
+          text-align: center;
+          margin-top: 8px;
+        "
+      >
+        &copy; 2025 CodeDeX | splashdexstudios@gmail.com | +233533365712
+      </ion-label>
+      <ion-label
+        style="margin-left: 30%"
+        color="medium"
+        (click)="shareToApps()"
+      >
+        Firetask v1.0.0
+      </ion-label>
+    </ion-footer>
+  </ion-menu>
+  <ion-router-outlet id="main"></ion-router-outlet>
+</ion-app>

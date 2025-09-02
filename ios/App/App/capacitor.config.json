@@ -1,0 +1,22 @@
+{
+  "appId": "fr.m2gi.todolist",
+  "appName": "todoList",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www",
+  "plugins": {
+    "SplashScreen": {},
+    "GoogleAuth": {
+      "scopes": [
+        "profile",
+        "email"
+      ],
+      "serverClientId": "917146175999-c82qs0tbr1ilqoefijg0erq2f3tfnvq7.apps.googleusercontent.com",
+      "forceCodeForRefreshToken": true
+    },
+    "Keyboard": {
+      "style": "dark"
+    }
+  },
+  "cordova": {}
+}

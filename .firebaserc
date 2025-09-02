@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "todolist-app-e908c": {
+      "hosting": {
+        "app": [
+          "todolist-app-e908c"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "todolist-app-e908c"
+  }
+}

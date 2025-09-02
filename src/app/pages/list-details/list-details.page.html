@@ -1,0 +1,124 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-title>{{list?.name}} </ion-title>
+        <ion-buttons slot="start">
+            <ion-back-button color='yellow-light' defaultHref="home"></ion-back-button>
+        </ion-buttons>
+        <ion-buttons slot="primary" (click)="addTodoModal()">
+            <ion-button color='yellow-light'>
+                <ion-icon name="add-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+    <ion-toolbar>
+    <ion-searchbar animated debounce="500" (ionChange)="onSearchChange($event)"></ion-searchbar>
+    </ion-toolbar>
+    <ion-toolbar>
+        <div class="progress-wrapper">
+            <div class="progress-bar" [style.width]="this.list?.progress + '%'">
+                {{this.list?.progress}}%
+            </div>
+        </div>
+    </ion-toolbar>
+    <ion-toolbar>
+        <ion-segment style="width: 100%;" value="tasks" (ionChange)="segmentChanged($event)">
+          <ion-segment-button value="tasks">
+            <ion-label>Tasks</ion-label>
+          </ion-segment-button> 
+          <ion-segment-button value="members">
+            <ion-label>Members</ion-label>
+          </ion-segment-button>
+        </ion-segment>
+      </ion-toolbar>
+</ion-header>
+
+
+<ion-content [fullscreen]="true">
+    <ion-list *ngIf="this.selectedSegment === 'tasks'">
+        <ion-item-sliding *ngFor="let todo of searchResult">
+            <ion-item>
+                <ion-row>
+                    <ion-col>
+                        <ion-checkbox color='yellow-light' [(ngModel)]="todo.isDone" (ngModelChange)="changed(todo)"></ion-checkbox>
+                    </ion-col >
+                    <ion-col col-10 [routerLink]="['/', 'todo-details', this.list.id, todo.id]">
+                        <ion-label class="text-padding">
+                            <h2 class="elipsis" [ngClass]="todo.isDone ? 'strikethrough' : 'null'">{{todo?.title}}</h2>
+                            <p class="elipsis" [ngClass]="todo.isDone ? 'strikethrough' : 'null'">{{todo?.description}}</p>
+                        </ion-label>
+                    </ion-col>
+                </ion-row>
+            </ion-item>
+
+            <ion-item-options side="end">
+                <ion-item-option color="primary" (click)="removeTodo(todo)">
+                    <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+                </ion-item-option>
+                <ion-item-option color="danger" (click)="removeTodo(todo)">
+                    <ion-icon slot="icon-only" name="trash"></ion-icon>
+                </ion-item-option>
+            </ion-item-options>
+
+        </ion-item-sliding>
+
+    </ion-list>
+
+<!---------------------- Members  -------------------------->  
+<!---------------------------------------------------------->   
+
+      <!--------- OWNER  --------->
+    <ion-item-divider *ngIf="this.selectedSegment === 'members'">
+        <ion-label>Owner</ion-label>
+    </ion-item-divider>
+
+    <ion-item-sliding *ngIf="this.selectedSegment === 'members'">
+        <ion-item>
+            <ion-row>
+                <ion-col>
+                    <img class="user-picture"
+                    [src]="this.userService.getUserByEmail(this.list.owner)?.photoURL ? this.userService.getUserByEmail(this.list.owner)?.photoURL : 
+                           'https://images.assetsdelivery.com/compings_v2/2nix/2nix1408/2nix140800145.jpg'"/>
+                </ion-col >
+                <ion-col col-10 style="margin:auto">
+                    <ion-label  class="text-padding">
+                        <h2 class="elipsis">{{ this.userService.getUserByEmail(this.list.owner)?.name }}</h2>
+                        <p  class="elipsis">{{ this.userService.getUserByEmail(this.list.owner)?.email }}</p>
+                        <p  *ngIf="this.userService.getUserByEmail(this.list.owner)?.phone" class="elipsis">{{ this.userService.getUserByEmail(this.list.owner)?.phone }}</p>
+                    </ion-label>
+                </ion-col>
+            </ion-row>
+        </ion-item>
+    </ion-item-sliding>
+
+    <!--------- OTHERS  --------->
+    <ion-item-divider *ngIf="this.membersData?.length > 0 && this.selectedSegment === 'members'">
+        <ion-label>Others</ion-label>
+    </ion-item-divider>
+
+    <ion-list *ngIf="this.selectedSegment === 'members'">
+        <ion-item-sliding *ngFor="let user of this.membersData">
+            <ion-item>
+                <ion-row>
+                    <ion-col>
+                        <img class="user-picture"
+                        [src]="user?.photoURL ? user?.photoURL : 
+                              'https://images.assetsdelivery.com/compings_v2/2nix/2nix1408/2nix140800145.jpg'"/>
+                    </ion-col >
+                    <ion-col col-10 style="margin:auto">
+                        <ion-label  class="text-padding">
+                            <h2 class="elipsis">{{ user?.name }}</h2>
+                            <p  class="elipsis">{{ user?.email }}</p>
+                            <p  *ngIf="user?.phone" class="elipsis" (click)="onCallNumber(user?.phone)">{{ user?.phone }}</p>
+                        </ion-label>
+                    </ion-col>
+                </ion-row>
+            </ion-item>
+            <!-- ITEM OPTIONS -->
+            <ion-item-options side="end" *ngIf="this.AuthService.getCurrentUser()?.email == this.list.owner">
+                <ion-item-option color="danger" (click)="removeMember(user?.email)">
+                <ion-icon slot="icon-only" name="trash"></ion-icon>
+                </ion-item-option>
+            </ion-item-options>
+        </ion-item-sliding>
+    </ion-list>
+</ion-content>
