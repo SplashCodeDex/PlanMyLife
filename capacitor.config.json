@@ -1,6 +1,6 @@
 // Ownership & Contact: CodeDeX Labs | hello@splashdexstudios.com | +233533365712 | © 2025 CodeDeX Labs
 {
-  "appId": "fr.m2gi.todolist",
+  "appId": "com.codedex.planmylife",
   "appName": "todoList",
   "bundledWebRuntime": false,
   "npmClient": "npm",

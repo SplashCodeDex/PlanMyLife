@@ -1,14 +1,14 @@
 {
   "targets": {
-    "todolist-app-e908c": {
+    "planmylife-43d6b": {
       "hosting": {
         "app": [
-          "todolist-app-e908c"
+          "planmylife-43d6b"
         ]
       }
     }
   },
   "projects": {
-    "default": "todolist-app-e908c"
+    "default": "planmylife-43d6b"
   }
 }

@@ -3,23 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>917146175999-8h8rb7m8aljvfjbtvduv2valnjpr5cpt.apps.googleusercontent.com</string>
+	<string>155073571358-1c26j4k623t0faoqu25ngtbsse8jmqeq.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.917146175999-8h8rb7m8aljvfjbtvduv2valnjpr5cpt</string>
+	<string>com.googleusercontent.apps.155073571358-1c26j4k623t0faoqu25ngtbsse8jmqeq</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>917146175999-vq8l0vbtve12r2ms6hnlbcpfl84j4k0g.apps.googleusercontent.com</string>
+	<string>155073571358-47q7eqrfrtoj505410uj4ounei2m7m4s.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDQEkRxmAqj-BljU4mM_0qUny7_S-9oyMA</string>
+	<string>AIzaSyDjyaxRt0pOzeNJfaZeapC21vSVtPqZedw</string>
 	<key>GCM_SENDER_ID</key>
-	<string>917146175999</string>
+	<string>1086505015820</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>fr.m2gi.todolist</string>
+	<string>com.codedex.planmylife</string>
 	<key>PROJECT_ID</key>
-	<string>todolist-app-e908c</string>
+	<string>planmylife-43d6b</string>
 	<key>STORAGE_BUCKET</key>
-	<string>todolist-app-e908c.appspot.com</string>
+	<string>planmylife-43d6b.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:917146175999:ios:e771c62449c02ac871bfca</string>
+	<string>1:1086505015820:ios:49066b2500ee8324d22c29</string>
 </dict>
 </plist>

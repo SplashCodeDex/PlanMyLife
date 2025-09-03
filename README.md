@@ -64,7 +64,7 @@ ionic serve
 
 ### Live demo
 
-### [&nbsp;&nbsp;&nbsp;click here](https://todolist-app-e908c.firebaseapp.com) &nbsp;&nbsp;or&nbsp;&nbsp; [here](https://todolist-app-e908c.web.app)
+### [&nbsp;&nbsp;&nbsp;click here](https://planmylife-43d6b.web.app) &nbsp;&nbsp;or&nbsp;&nbsp; [here](https://planmylife-43d6b.firebaseapp.com)
 
 ### First launch
 

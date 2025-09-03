@@ -1,24 +1,24 @@
 {
   "project_info": {
-    "project_number": "917146175999",
-    "project_id": "todolist-app-e908c",
-    "storage_bucket": "todolist-app-e908c.appspot.com"
+    "project_number": "1086505015820",
+    "project_id": "planmylife-43d6b",
+    "storage_bucket": "planmylife-43d6b.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:917146175999:android:95c88d4b0b93be3f71bfca",
+        "mobilesdk_app_id": "1:1086505015820:android:49066b2500ee8324d22c29",
         "android_client_info": {
-          "package_name": "fr.m2gi.todolist"
+          "package_name": "com.codedex.planmylife"
         }
       },
       "oauth_client": [
         {
-          "client_id": "917146175999-vq8l0vbtve12r2ms6hnlbcpfl84j4k0g.apps.googleusercontent.com",
+          "client_id": "155073571358-47q7eqrfrtoj505410uj4ounei2m7m4s.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "fr.m2gi.todolist",
-            "certificate_hash": "fac443a39b5d23389f57019abfd1a8abb30e0002"
+            "package_name": "com.codedex.planmylife",
+            "certificate_hash": "BB8CEEA17B049B32C48F04D23C9242524F91ABC7"
           }
         },
         {
