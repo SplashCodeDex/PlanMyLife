@@ -17,19 +17,76 @@ $RECYCLE.BIN/
 log.txt
 npm-debug.log*
 
+# IDEs and editors
 /.idea
+/.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Ionic
 /.ionic
 /.sass-cache
 /.sourcemaps
 /.versions
-/.vscode
 /coverage
-/dist
-/node_modules
 /platforms
 /plugins
+
+# Angular
+/.angular
+/dist
 /www
 /src/environments
 
+# Node.js
+/node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Firebase
 .firebase
+
+# Capacitor
+android/.gradle/
+android/app/build/
+android/capacitor-cordova-android-plugins/build/
+ios/build/
+ios/DerivedData/
+ios/Pods/
+
+# Gradle
+.gradle/
+
+# Android Studio
+*.iml
+*.ipr
+*.iws
+android/.idea/
+android/app/.idea/
+
+# iOS
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.xcuserstate
+ios/App/App.xcworkspace/xcuserdata/
+ios/App/App.xcodeproj/xcuserdata/
+
+# Assets
 src/assets/icons
+
+# Build artifacts
+*.apk
+*.aab
+*.ipa
+*.dSYM.zip
+
+# Environment files
+.env
+.env.local
+.env.production
