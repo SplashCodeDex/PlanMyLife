@@ -2,9 +2,8 @@ import { Settings } from './../../models/settings';
 import { SettingService } from './../setting/setting.service';
 import { Injectable } from '@angular/core';
 import {ToastController} from "@ionic/angular";
-import { Plugins, HapticsImpactStyle, Capacitor } from '@capacitor/core';
-
-const { Haptics } = Plugins;
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
+import { Capacitor } from '@capacitor/core';
 
 @Injectable({
   providedIn: 'root'
@@ -47,17 +46,17 @@ export class UiService {
 
   public async hapticsImpactMedium(){
     if(Capacitor.isPluginAvailable('Haptics'))
-      await Haptics.impact({ style: HapticsImpactStyle.Medium });
+      await Haptics.impact({ style: ImpactStyle.Medium });
   }
 
   public async hapticsImpactHeavy(){
     if(Capacitor.isPluginAvailable('Haptics'))
-      await Haptics.impact({ style: HapticsImpactStyle.Heavy });
+      await Haptics.impact({ style: ImpactStyle.Heavy });
   }
-  
+
   public async hapticsImpactLight(){
     if(Capacitor.isPluginAvailable('Haptics'))
-      await Haptics.impact({ style: HapticsImpactStyle.Light });
+      await Haptics.impact({ style: ImpactStyle.Light });
   }
 
 }

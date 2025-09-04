@@ -1,56 +1,73 @@
-import { NotificationService } from './services/notification/notification.service';
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
-import {AuthService} from "./services/auth/auth.service";
-import {UiService} from "./services/ui/ui.service";
-import { Plugins, registerWebPlugin, StatusBarStyle, Capacitor } from '@capacitor/core';
+import { RouterOutlet } from '@angular/router';
+import { IonApp, IonRouterOutlet } from '@ionic/angular';
+import { AuthService } from './services/auth/auth.service';
+import { UiService } from './services/ui/ui.service';
+import { NotificationService } from './services/notification/notification.service';
+import { Capacitor } from '@capacitor/core';
 import { FacebookLogin } from '@capacitor-community/facebook-login';
-const { StatusBar, SplashScreen, Share, Browser, Network, LocalNotifications } = Plugins;
 
 @Component({
   selector: 'app-root',
+  standalone: true,
+  imports: [IonApp, IonRouterOutlet, RouterOutlet],
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss']
 })
-export class AppComponent {
-  constructor(private platform: Platform,
-              private uiService: UiService,
-              private authService : AuthService,
-              private notifService: NotificationService) {
+export class AppComponent implements OnInit {
+  private platform = inject(Platform);
+  private uiService = inject(UiService);
+  private authService = inject(AuthService);
+  private notifService = inject(NotificationService);
 
+  ngOnInit() {
     this.initializeApp();
-    registerWebPlugin(FacebookLogin);
-    this.notifService.requestPermission()
-    Network.addListener('networkStatusChange', (status) => {
-      if(status.connected)
-        this.uiService.presentToast('Network connection established sucessfully', 'success',5000)
-      else
-        this.uiService.presentToast('The network connection was lost', 'danger',5000)
-    })
+    this.notifService.requestPermission();
   }
 
-  initializeApp() {
-    this.platform.ready().then(() => {
-      if(Capacitor.isPluginAvailable('StatusBar')){
-        StatusBar.setStyle({style: (document.body.getAttribute('color-theme') === 'dark') ? StatusBarStyle.Dark : StatusBarStyle.Light});
-        StatusBar.show()
-      }
-      if(Capacitor.isPluginAvailable('SplashScreen')){
-        SplashScreen.hide();
+  private async initializeApp() {
+    await this.platform.ready();
+
+    // Initialize network listener
+    const { Network } = await import('@capacitor/network');
+    Network.addListener('networkStatusChange', (status) => {
+      if (status.connected) {
+        this.uiService.presentToast('Network connection established successfully', 'success', 5000);
+      } else {
+        this.uiService.presentToast('The network connection was lost', 'danger', 5000);
       }
     });
+
+    // Initialize status bar
+    if (Capacitor.isPluginAvailable('StatusBar')) {
+      const { StatusBar, Style } = await import('@capacitor/status-bar');
+      const theme = document.body.getAttribute('color-theme');
+      await StatusBar.setStyle({
+        style: theme === 'dark' ? Style.Dark : Style.Light
+      });
+      await StatusBar.show();
+    }
+
+    // Hide splash screen
+    if (Capacitor.isPluginAvailable('SplashScreen')) {
+      const { SplashScreen } = await import('@capacitor/splash-screen');
+      await SplashScreen.hide();
+    }
   }
 
-  logout(){
+  logout() {
     this.authService.logout();
   }
 
-  async openBrowser(url : string) {
-    await Browser.open({ url: url });
+  async openBrowser(url: string) {
+    const { Browser } = await import('@capacitor/browser');
+    await Browser.open({ url });
   }
 
-  async shareToApps(){
-    let share = await Share.share({
+  async shareToApps() {
+    const { Share } = await import('@capacitor/share');
+    await Share.share({
       title: 'Firetask : a shared todolist app',
       text: 'Really awesome app you need to see right now',
       url: 'https://github.com/chouaibMo/ionic-todolist-app',

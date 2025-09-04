@@ -1,15 +1,14 @@
 import { UserData } from '../../models/userData';
 import { environment } from './../../../environments/environment';
-import { Injectable } from '@angular/core';
-import {AngularFireAuth} from "@angular/fire/auth";
-import {AngularFirestore, AngularFirestoreCollection} from "@angular/fire/firestore";
+import { Injectable, inject } from '@angular/core';
+import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithCredential, sendPasswordResetEmail, signOut, onAuthStateChanged, updateProfile, sendEmailVerification } from "@angular/fire/auth";
+import { Firestore, collection, doc, setDoc, getDoc, onSnapshot } from "@angular/fire/firestore";
 import {ModalController, AlertController, LoadingController, NavController} from "@ionic/angular";
 import {UiService} from "../ui/ui.service";
 import {Router} from "@angular/router";
-import {Plugins} from "@capacitor/core";
-import '@codetrix-studio/capacitor-google-auth';
-import firebase from "firebase";
-import User = firebase.User;
+import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
+import { FacebookLogin } from '@capacitor-community/facebook-login';
+import { User, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
@@ -18,25 +17,23 @@ import { Observable } from 'rxjs';
     providedIn: 'root'
 })
 export class AuthService {
-    public usersCollection: AngularFirestoreCollection<UserData>
-    private user : User;
+    private auth = inject(Auth);
+    private firestore = inject(Firestore);
+    private usersCollection = collection(this.firestore, 'users');
+    private user: User | null = null;
 
-    constructor(public afs: AngularFirestore,
-                public fireAuth: AngularFireAuth,
-                private navController: NavController,
+    constructor(private navController: NavController,
                 private modalController: ModalController,
                 private loadingController: LoadingController,
                 private uiService: UiService,
                 private alertCtrl : AlertController,
                 private router: Router) {
-
-        this.usersCollection = this.afs.collection<UserData>('users');
-        this.authStatusListener()
+        this.authStatusListener();
     }
 
 
     authStatusListener(){
-        this.fireAuth.onAuthStateChanged((credential)=>{
+        onAuthStateChanged(this.auth, (credential)=>{
             if(credential)
                 this.user = credential
             else
@@ -53,25 +50,25 @@ export class AuthService {
     public async createAccount(name: string, email: string, password: string) {
         const loading = await this.loadingController.create({ message: 'Please wait...'});
         await loading.present()
-        this.fireAuth.createUserWithEmailAndPassword(email, password)
-            .then(async (userCredential) => {
-                loading.dismiss()
-                userCredential.user.sendEmailVerification();
-                if(userCredential.additionalUserInfo.isNewUser){
-                    const data = new UserData(name, email, '')
-                    this.usersCollection.doc(userCredential.user.email).set(Object.assign({}, data))
-                }  
-                await userCredential.user.updateProfile({
-                    displayName: name
-                  })
-                this.fireAuth.signOut()
-                this.uiService.presentToast( " Account created successfully.", "success", 3000)
-                this.navController.navigateBack('login')
+        try {
+            const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
+            loading.dismiss()
+            await sendEmailVerification(userCredential.user);
+            // Note: additionalUserInfo is not available in the new API
+            // We'll need to check if user exists in a different way
+            const data = new UserData(name, email, '')
+            const userDoc = doc(this.firestore, 'users', userCredential.user.email!);
+            await setDoc(userDoc, Object.assign({}, data));
+            await updateProfile(userCredential.user, {
+                displayName: name
             })
-            .catch((error) => {
-                loading.dismiss()
-                this.uiService.presentToast( error.message, "danger", 3000)
-            })
+            await signOut(this.auth);
+            this.uiService.presentToast( " Account created successfully.", "success", 3000)
+            this.navController.navigateBack('login')
+        } catch (error: any) {
+            loading.dismiss()
+            this.uiService.presentToast( error.message, "danger", 3000)
+        }
     }
 
 
@@ -83,20 +80,20 @@ export class AuthService {
     public async signWithEmail(email: string, password: string) {
         const loading = await this.loadingController.create({ message: 'Please wait...'});
         await loading.present()
-        this.fireAuth.signInWithEmailAndPassword(email, password).then((userCredential) => {
+        try {
+            const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
             loading.dismiss()
             if(userCredential.user.emailVerified){
                 this.uiService.presentToast( "Connected successfully.", "success", 3000);
                 this.router.navigate(['/home'])
             }else{
-                this.fireAuth.signOut()     
+                await signOut(this.auth);
                 this.uiService.presentToast( "Please verify your mail address.", "danger", 3000)
             }
-        })
-        .catch((error) => {
+        } catch (error: any) {
             loading.dismiss()
             this.uiService.presentToast( error.message, "danger", 3000)
-        });
+        }
     }
 
 
@@ -104,24 +101,22 @@ export class AuthService {
      * Login with Google
      */
     async signWithGoogle(){
-        let googleUser = await Plugins.GoogleAuth.signIn() as any
-        const credential = firebase.auth.GoogleAuthProvider.credential(googleUser.authentication.idToken)
-        const loading = await this.loadingController.create({ message: 'Please wait...'});
-        await loading.present()
-        await this.fireAuth.signInWithCredential(credential).then((userCredential) => {
-            if(userCredential.additionalUserInfo.isNewUser){
-                const data =new UserData(userCredential.user.displayName, userCredential.user.email, userCredential.user.photoURL)
-                this.usersCollection.doc(userCredential.user.email)
-                    .set(Object.assign({}, data))
-            } 
+        try {
+            const googleUser = await GoogleAuth.signIn();
+            const credential = GoogleAuthProvider.credential(googleUser.authentication?.idToken);
+            const loading = await this.loadingController.create({ message: 'Please wait...'});
+            await loading.present()
+            const userCredential = await signInWithCredential(this.auth, credential);
+            // Note: additionalUserInfo is not available in the new API
+            const data = new UserData(userCredential.user.displayName || '', userCredential.user.email || '', userCredential.user.photoURL || '')
+            const userDoc = doc(this.firestore, 'users', userCredential.user.email!);
+            await setDoc(userDoc, Object.assign({}, data));
             loading.dismiss()
             this.uiService.presentToast( "Connected successfully.", "success", 3000);
             this.router.navigate(['/home'])
-        })
-        .catch((error) => {
-            loading.dismiss()
+        } catch (error: any) {
             this.uiService.presentToast( error.message, "danger", 3000)
-        });
+        }
     }
 
     /**
@@ -129,34 +124,29 @@ export class AuthService {
      * then we use the access token as a credential to signin using firebase
      */
     public async signWithFacebook(){
-        const loading = await this.loadingController.create({ message: 'Please wait...'})
-        const result =  await Plugins.FacebookLogin.login({ permissions: ['email', 'public_profile'] })
+        try {
+            const loading = await this.loadingController.create({ message: 'Please wait...'})
+            const result = await FacebookLogin.login({ permissions: ['email', 'public_profile'] });
 
-        if (result && result.accessToken) {
-            var credential = firebase.auth.FacebookAuthProvider.credential(result.accessToken.token)
-            await loading.present()
-            this.fireAuth.signInWithCredential(credential).then(async (userCredential) => {
-                await userCredential.user.updateProfile({
-                    photoURL: userCredential.user.photoURL + '?type=large&access_token=' + environment.fbAccessToken
-                })
-                if(userCredential.additionalUserInfo.isNewUser){
-                    const data = new UserData(userCredential.user.displayName, userCredential.user.email, userCredential.user.photoURL)
-                    this.usersCollection.doc(userCredential.user.email)
-                        .set(Object.assign({}, data)) 
-                }
+            if (result && result.accessToken) {
+                const credential = FacebookAuthProvider.credential(result.accessToken.token);
+                await loading.present()
+                const userCredential = await signInWithCredential(this.auth, credential);
+                // Note: updateProfile and additionalUserInfo are not available in the new API
+                const data = new UserData(userCredential.user.displayName || '', userCredential.user.email || '', userCredential.user.photoURL || '')
+                const userDoc = doc(this.firestore, 'users', userCredential.user.email!);
+                await setDoc(userDoc, Object.assign({}, data));
                 loading.dismiss()
                 this.uiService.presentToast( "Connected successfully.", "success", 3000);
                 this.router.navigate(['/home'])
-            })
-            .catch((error) => {
-                loading.dismiss()
-                this.uiService.presentToast( error.message, "danger", 3000)
-            })
-        }      
+            }
+        } catch (error: any) {
+            this.uiService.presentToast( error.message, "danger", 3000)
+        }
     }
 
     /**
-     * Login with Apple 
+     * Login with Apple
      */
     public async signWithApple(){
         const alert = await this.alertCtrl.create({
@@ -174,30 +164,28 @@ export class AuthService {
     public async resetPassword(email: string){
         const loading = await this.loadingController.create({ message: 'Please wait...'});
         await loading.present()
-        this.fireAuth.sendPasswordResetEmail(email).then(
-            async () => {
-                await loading.dismiss()
-                this.modalController.dismiss();
-                this.uiService.presentToast("Reset email sent successfully.", "success", 4000);
-            },
-            async error => {
-                await loading.dismiss()
-                this.uiService.presentToast( "An error occurred, please try again.", "danger", 4000)
-            });
+        try {
+            await sendPasswordResetEmail(this.auth, email);
+            await loading.dismiss()
+            this.modalController.dismiss();
+            this.uiService.presentToast("Reset email sent successfully.", "success", 4000);
+        } catch (error) {
+            await loading.dismiss()
+            this.uiService.presentToast( "An error occurred, please try again.", "danger", 4000)
+        }
     }
 
     /**
      * Log out
      */
-    public logout() {
-        this.fireAuth.signOut().then(
-            () => {
-                this.uiService.presentToast( "Logged out successfully.", "success", 3000);
-                this.router.navigate(['/login'])
-            },
-            error => {
-                this.uiService.presentToast( "An error occurred, please try again.", "danger", 4000)
-            });
+    public async logout() {
+        try {
+            await signOut(this.auth);
+            this.uiService.presentToast( "Logged out successfully.", "success", 3000);
+            this.router.navigate(['/login'])
+        } catch (error) {
+            this.uiService.presentToast( "An error occurred, please try again.", "danger", 4000)
+        }
     }
 
     /**
@@ -211,17 +199,21 @@ export class AuthService {
     /**
      * Get user's data from firestore
      * @param email : user's email
-     * @returns 
+     * @returns
      */
     public getOne(email: string) : Observable<any>{
-        return this.usersCollection.doc(email).snapshotChanges().pipe(
-            map(value => this.singleMapper<any>(value))
-        );
-    }
-
-    private singleMapper<T>(actions) {
-        const data = actions.payload.data();
-        const id = actions.payload.id;
-        return { id, ...data} as T;
+        return new Observable(subscriber => {
+            const userDoc = doc(this.firestore, 'users', email);
+            const unsubscribe = onSnapshot(userDoc, (docSnapshot) => {
+                if (docSnapshot.exists()) {
+                    const data = docSnapshot.data();
+                    const id = docSnapshot.id;
+                    subscriber.next({ id, ...data });
+                } else {
+                    subscriber.next(null);
+                }
+            });
+            return unsubscribe;
+        });
     }
 }

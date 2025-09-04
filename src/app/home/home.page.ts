@@ -20,8 +20,8 @@ import { Settings } from '../models/settings';
 export class HomePage {
     private ownedLists: List[]
     private sharedLists: List[]
-    private ownedResult: List[]
-    private sharedResult: List[]
+    public ownedResult: List[]
+    public sharedResult: List[]
     private settings : Settings
 
     constructor(private uiService : UiService,
@@ -42,23 +42,25 @@ export class HomePage {
         this.settingService.getSettings().subscribe(value => {
             this.settings = value
         })
-        this.AuthService.fireAuth.onAuthStateChanged((credential)=>{
-            if(credential){
+
+        // Listen for auth state changes and update lists accordingly
+        this.AuthService.getOne(this.AuthService.getCurrentUser()?.email || '').subscribe(user => {
+            if(user){
                 this.listService.getAll().subscribe(async values => {
                     this.ownedLists = values
                     this.ownedResult = this.ownedLists
-                    if(this.settings.notification)
-                        this.notifService.setNotifications(1, 'Are you eady for today ?', 'You have '+ this.countActiveLists(this.ownedLists) +' active lists')
-                    else    
+                    if(this.settings?.notification)
+                        this.notifService.setNotifications(1, 'Are you ready for today?', 'You have '+ this.countActiveLists(this.ownedLists) +' active lists')
+                    else
                         this.notifService.cancelNotifications('1')
                 })
                 this.listService.getAllShared().subscribe(values => {
                     this.sharedLists = values
                     this.sharedResult = this.sharedLists
-                    if(this.settings.notification)
-                        this.notifService.setNotifications(2, 'Are you eady for today ?', 'You have '+ this.countActiveLists(this.sharedLists) +' active shared lists')
-                    else    
-                        this.notifService.cancelNotifications('2')    
+                    if(this.settings?.notification)
+                        this.notifService.setNotifications(2, 'Are you ready for today?', 'You have '+ this.countActiveLists(this.sharedLists) +' active shared lists')
+                    else
+                        this.notifService.cancelNotifications('2')
                 })
             }
             else{
@@ -153,7 +155,7 @@ export class HomePage {
             this.presentModal('share', list)
         else{
             this.uiService.presentToast("You don't have permission to perform this operation", "danger", 3000)
-        }    
+        }
     }
 
     /**
@@ -185,7 +187,7 @@ export class HomePage {
         });
         await alert.present();
     }
-    
+
     countActiveLists(lists: List[]){
         var active = 0;
         lists.map(list => {

@@ -24,18 +24,18 @@ import { Capacitor } from '@capacitor/core';
 export class ListDetailsPage implements OnInit {
   public list: List
   private todos: Todo[]
-  private searchResult: Todo[]
+  public searchResult: Todo[]
   private settings : Settings
-  
-  private selectedSegment : string
+
+  public selectedSegment : string
   private ownerData : UserData
-  private membersData: UserData[]
+  public membersData: UserData[]
 
 
   constructor(private listService: ListService,
               private uiService : UiService,
               private callNumber: CallNumber,
-              private AuthService: AuthService,
+              public AuthService: AuthService,
               private userService: UserService,
               private settingService : SettingService,
               private alertController : AlertController,

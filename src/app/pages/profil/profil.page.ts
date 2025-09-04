@@ -14,15 +14,15 @@ import { UserService } from 'src/app/services/user/user.service';
 })
 export class ProfilPage implements OnInit {
 
-    private ownerData : UserData
+    public ownerData : UserData
 
-    constructor(private authService: AuthService,
+    constructor(public authService: AuthService,
                 private userService: UserService,
                 private cameraService: CameraService,
                 private modalController: ModalController,
                 private actionSheetController: ActionSheetController) { }
 
-    
+
     ngOnInit() {
         this.ownerData = this.userService.getUserByEmail(this.authService.getCurrentUser().email)
     }
@@ -68,6 +68,6 @@ export class ProfilPage implements OnInit {
         componentProps: {}
     });
     return await modal.present();
-    } 
+    }
 
 }

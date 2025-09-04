@@ -18,13 +18,13 @@ export class SettingsPage implements OnInit {
   private settings : Settings
   private supportedVoices;
   private languages = []
-  
-  constructor(private uiService: UiService,
-              private settingService: SettingService,
-              private pickerController: PickerController) {}
-              
 
-  ngOnInit() { 
+  constructor(private uiService: UiService,
+              public settingService: SettingService,
+              private pickerController: PickerController) {}
+
+
+  ngOnInit() {
     this.settingService.getSettings().subscribe(value => this.settings = value)
     TextToSpeech.getSupportedVoices().then(async result => {
       this.supportedVoices = result.voices
@@ -33,7 +33,7 @@ export class SettingsPage implements OnInit {
         this.languages.push({text: text, value: index})
       })
     });
-    
+
   }
 
 
@@ -64,7 +64,7 @@ export class SettingsPage implements OnInit {
     picker.addEventListener('ionPickerColChange', async (event: any) => {
       if(this.settings.haptics)
       this.uiService.hapticsImpactMedium()
-    }) 
+    })
   }
 
   /**

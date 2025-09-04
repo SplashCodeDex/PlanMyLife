@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Capacitor, Plugins, StatusBarStyle } from '@capacitor/core';
+import { Capacitor } from '@capacitor/core';
+import { StatusBar, Style } from '@capacitor/status-bar';
 import {BehaviorSubject, Observable} from "rxjs";
 import {Settings} from "../../models/settings";
 import {StorageService} from "../storage/storage.service";
-
-const { StatusBar } = Plugins;
 
 @Injectable({
   providedIn: 'root'
@@ -30,12 +29,12 @@ export class SettingService {
         if (this.object.getValue().darkMode){
           document.body.setAttribute('color-theme', 'dark');
           if(Capacitor.isPluginAvailable('StatusBar'))
-            StatusBar.setStyle({style: StatusBarStyle.Dark});
+            StatusBar.setStyle({style: Style.Dark});
         }
         else{
           document.body.setAttribute('color-theme', 'light');
           if(Capacitor.isPluginAvailable('StatusBar'))
-            StatusBar.setStyle({style: StatusBarStyle.Light});
+            StatusBar.setStyle({style: Style.Light});
         }
       }
       else{
@@ -56,12 +55,12 @@ export class SettingService {
     if (newValue.darkMode){
       document.body.setAttribute('color-theme', 'dark');
       if(Capacitor.isPluginAvailable('StatusBar'))
-        StatusBar.setStyle({style: StatusBarStyle.Dark});
+        StatusBar.setStyle({style: Style.Dark});
     }
     else{
       document.body.setAttribute('color-theme', 'light');
       if(Capacitor.isPluginAvailable('StatusBar'))
-        StatusBar.setStyle({style: StatusBarStyle.Light});
+        StatusBar.setStyle({style: Style.Light});
     }
       
   }

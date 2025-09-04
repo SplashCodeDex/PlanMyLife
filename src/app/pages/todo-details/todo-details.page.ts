@@ -22,13 +22,13 @@ import {MapService} from "../../services/map/map.service";
 
 export class TodoDetailsPage implements OnInit {
   /* Todolist fields*/
-  private todo : Todo
+  public todo : Todo
   private list : List
   private settings : Settings
 
   /* Text to speech fields */
   private supportedVoices: SpeechSynthesisVoice[] = [];
-  private currentlySpeaking = false
+  public currentlySpeaking = false
 
   /* Mapbox fields */
   @ViewChild('map') mapElement: ElementRef;
@@ -61,7 +61,7 @@ export class TodoDetailsPage implements OnInit {
           if(this.todo.address){
             this.latitude = this.todo?.latitude ? this.todo.latitude : ''
             this.longitude = this.todo?.longitude ? this.todo.longitude : ''
-            setTimeout(() => this.initializeMap(), 50) 
+            setTimeout(() => this.initializeMap(), 50)
           }
         })
       }
@@ -123,7 +123,7 @@ export class TodoDetailsPage implements OnInit {
     this.map.fitBounds([
       [this.mapService.userCoords.coords.longitude, this.mapService.userCoords.coords.latitude],
       [this.todo.longitude, this.todo.latitude]
-      ]);    
+      ]);
     }
   }
 }

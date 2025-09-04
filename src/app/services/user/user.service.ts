@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { Injectable, inject } from '@angular/core';
+import { Firestore, collection, doc, updateDoc, onSnapshot } from '@angular/fire/firestore';
 import { Observable, combineLatest} from 'rxjs';
 import { map } from 'rxjs/operators';
 import { List } from 'src/app/models/list';
@@ -9,11 +9,11 @@ import { UserData } from 'src/app/models/userData';
   providedIn: 'root'
 })
 export class UserService {
-  public usersCollection: AngularFirestoreCollection<UserData>
+  private firestore = inject(Firestore);
+  private usersCollection = collection(this.firestore, 'users');
   public users : UserData[]
 
-  constructor(public afs: AngularFirestore) { 
-    this.usersCollection = this.afs.collection<UserData>('users');
+  constructor() {
     this.getAll().subscribe(value => this.users = value)
   }
 
@@ -21,10 +21,18 @@ export class UserService {
  /**
   *  Get all users (members) of a list
   */
-  public getAll() : Observable<UserData[]>{
-    return this.usersCollection.snapshotChanges().pipe(
-        map(value => this.multipleMapper<List>(value))
-    );
+ public getAll() : Observable<UserData[]>{
+   return new Observable(subscriber => {
+     const unsubscribe = onSnapshot(this.usersCollection, (querySnapshot) => {
+       const users: UserData[] = [];
+       querySnapshot.forEach((docSnapshot) => {
+         const data = docSnapshot.data();
+         users.push({ id: docSnapshot.id, ...data } as UserData);
+       });
+       subscriber.next(users);
+     });
+     return unsubscribe;
+   });
 }
 
   public getUserByEmail(email: string) : UserData{
@@ -54,29 +62,8 @@ export class UserService {
    *  update a user's data in firestore
    */
   public update(data : UserData) : void{
-    this.usersCollection.doc(data.email).update(Object.assign({},data))
+    const userDoc = doc(this.firestore, 'users', data.email);
+    updateDoc(userDoc, Object.assign({}, data));
   }
 
-  /**
-   * 
-   * @param actions 
-   * @returns 
-   */
-  private singleMapper<T>(actions) {
-    const data = actions.payload.data();
-    const id = actions.payload.id;
-    return { id, ...data} as T;
-  }
-
-  /**
-   * 
-   * @param data 
-   * @returns 
-   */
-  private multipleMapper<T>(data) {
-    return data.map(d => {
-      const id = d.payload.doc.id
-      return { id, ...d.payload.doc.data() } as T;
-    })
-  }
 }
