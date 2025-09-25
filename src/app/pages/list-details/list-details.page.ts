@@ -10,7 +10,7 @@ import {CreateTodoComponent} from "../../modals/create-todo/create-todo.componen
 import {Todo} from "../../models/todo";
 import {SettingService} from "../../services/setting/setting.service";
 import {UiService} from "../../services/ui/ui.service";
-import { CallNumber } from '@ionic-native/call-number/ngx';
+import { CallNumber } from '@droponio/capacitor-call-number';
 import { Settings } from 'src/app/models/settings';
 import { Capacitor } from '@capacitor/core';
 
@@ -31,12 +31,14 @@ export class ListDetailsPage implements OnInit {
   private ownerData : UserData
   public membersData: UserData[]
 
+  get userServiceGetter() {
+    return this.userService;
+  }
 
   constructor(private listService: ListService,
               private uiService : UiService,
-              private callNumber: CallNumber,
               public AuthService: AuthService,
-              private userService: UserService,
+              public userService: UserService,
               private settingService : SettingService,
               private alertController : AlertController,
               private activatedRoute: ActivatedRoute,
@@ -122,16 +124,12 @@ export class ListDetailsPage implements OnInit {
    *  Triggered when a task's checkbox is checked/unchecked.
    *  Update progress of the current list
    */
-  changed(todo: Todo) {
+  async changed(todo: Todo) {
     if(this.listService.hasWritePermission(this.list, this.AuthService.getCurrentUser().email)){
       todo.isDone ? this.list.nbChecked++ : this.list.nbChecked--;
-      this.listService.listsCollection.doc(this.list.id).update({
-        nbChecked: this.list.nbChecked
-      })
-      this.listService.listsCollection.doc(this.list.id).collection('todos').doc(todo.id).update({
-        isDone: todo.isDone
-      })
-      this.listService.updateProgress(this.list);
+      await this.listService.updateTodo(this.list, todo);
+      await this.listService.update(this.list);
+      await this.listService.updateProgress(this.list);
     }    
     else{
       this.uiService.presentToast("You don't have permission to perform this operation", "danger", 3000)
@@ -205,12 +203,13 @@ export class ListDetailsPage implements OnInit {
   /**
    * Triggered when user click on a member's phone number
    */
-  onCallNumber(number: string){
-    if(Capacitor.isNative){
-      this.callNumber.callNumber(number, true)
-        .catch(err => {
-          this.uiService.presentToast("Failed to call : "+err, "danger", 3000)
-        });
-      }    
+  async onCallNumber(number: string){
+    if(Capacitor.isNativePlatform()){
+      try {
+        await CallNumber.call({ number: number, bypassAppChooser: false });
+      } catch (error) {
+        this.uiService.presentToast("Failed to call : "+error, "danger", 3000)
+      }
+    }    
   }
 }

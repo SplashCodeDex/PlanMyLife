@@ -20,13 +20,13 @@
   <div class="logo-section__wrapper">
     <img class="logo-section__img"
          alt="profile picture"
-         [src]="this.authService.user?.photoURL ? this.authService.user?.photoURL : 'https://images.assetsdelivery.com/compings_v2/2nix/2nix1408/2nix140800145.jpg'"  />
+         [src]="user?.photoURL ? user?.photoURL : 'https://images.assetsdelivery.com/compings_v2/2nix/2nix1408/2nix140800145.jpg'"  />
     <ion-button class="edit-btn"
                 strong="true"
                 style="color: #3880ff; display: initial"
                 color="transparent"
                 (click)="this.presentActionSheet()">edit</ion-button>
-    <ion-title class="logo-section__name">{{this.authService.user?.displayName ? this.authService.user?.displayName.split(' ')[0] : "N/A" }}</ion-title>
+    <ion-title class="logo-section__name">{{user?.displayName ? user?.displayName.split(' ')[0] : "N/A" }}</ion-title>
   </div>
 
   <!-- NAME -->
@@ -34,7 +34,7 @@
     <ion-card-header>
       <ion-card-title class="card-title">Full Name</ion-card-title>
     </ion-card-header>
-    <ion-card-content>{{this.authService.user?.displayName ? this.authService.user?.displayName : "Not Available" }}</ion-card-content>
+    <ion-card-content>{{user?.displayName ? user?.displayName : "Not Available" }}</ion-card-content>
   </ion-card>
 
   <!-- EMAIL -->
@@ -42,7 +42,7 @@
     <ion-card-header>
       <ion-card-title class="card-title">Email</ion-card-title>
     </ion-card-header>
-    <ion-card-content>{{this.authService.user?.email ? this.authService.user?.email : "Not Available" }}</ion-card-content>
+    <ion-card-content>{{user?.email ? user?.email : "Not Available" }}</ion-card-content>
   </ion-card>
 
   <!-- PHONE NUMBER -->

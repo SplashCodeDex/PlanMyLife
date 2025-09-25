@@ -2,7 +2,7 @@ import { CameraService } from './../../services/camera/camera.service';
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../../services/auth/auth.service";
 import {ActionSheetController, ModalController} from "@ionic/angular";
-import {CameraSource} from '@capacitor/core';
+import { CameraSource } from '@capacitor/camera';
 import { UpdateProfilComponent } from 'src/app/modals/update-profil/update-profil.component';
 import { UserData } from 'src/app/models/userData';
 import { UserService } from 'src/app/services/user/user.service';
@@ -15,6 +15,10 @@ import { UserService } from 'src/app/services/user/user.service';
 export class ProfilPage implements OnInit {
 
     public ownerData : UserData
+
+    get user() {
+      return this.authService.getCurrentUser();
+    }
 
     constructor(public authService: AuthService,
                 private userService: UserService,

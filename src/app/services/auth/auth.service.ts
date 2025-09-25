@@ -1,15 +1,13 @@
 import { UserData } from '../../models/userData';
-import { environment } from './../../../environments/environment';
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithCredential, sendPasswordResetEmail, signOut, onAuthStateChanged, updateProfile, sendEmailVerification } from "@angular/fire/auth";
-import { Firestore, collection, doc, setDoc, getDoc, onSnapshot } from "@angular/fire/firestore";
+import { Firestore, collection, doc, setDoc, onSnapshot } from "@angular/fire/firestore";
 import {ModalController, AlertController, LoadingController, NavController} from "@ionic/angular";
 import {UiService} from "../ui/ui.service";
 import {Router} from "@angular/router";
-import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
+import { SocialLogin } from '@capgo/capacitor-social-login';
 import { FacebookLogin } from '@capacitor-community/facebook-login';
 import { User, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
-import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 
@@ -17,12 +15,11 @@ import { Observable } from 'rxjs';
     providedIn: 'root'
 })
 export class AuthService {
-    private auth = inject(Auth);
-    private firestore = inject(Firestore);
-    private usersCollection = collection(this.firestore, 'users');
     private user: User | null = null;
 
-    constructor(private navController: NavController,
+    constructor(private auth: Auth,
+                private firestore: Firestore,
+                private navController: NavController,
                 private modalController: ModalController,
                 private loadingController: LoadingController,
                 private uiService: UiService,
@@ -101,20 +98,28 @@ export class AuthService {
      * Login with Google
      */
     async signWithGoogle(){
+        const loading = await this.loadingController.create({ message: 'Please wait...'});
         try {
-            const googleUser = await GoogleAuth.signIn();
-            const credential = GoogleAuthProvider.credential(googleUser.authentication?.idToken);
-            const loading = await this.loadingController.create({ message: 'Please wait...'});
-            await loading.present()
-            const userCredential = await signInWithCredential(this.auth, credential);
-            // Note: additionalUserInfo is not available in the new API
-            const data = new UserData(userCredential.user.displayName || '', userCredential.user.email || '', userCredential.user.photoURL || '')
-            const userDoc = doc(this.firestore, 'users', userCredential.user.email!);
-            await setDoc(userDoc, Object.assign({}, data));
-            loading.dismiss()
-            this.uiService.presentToast( "Connected successfully.", "success", 3000);
-            this.router.navigate(['/home'])
+            const result = await SocialLogin.login({
+              provider: 'google',
+              options: {} // Add an empty options object
+            });
+            if (result.result && (result.result as any).idToken) { // Check for result.result and idToken
+                const credential = GoogleAuthProvider.credential((result.result as any).idToken);
+                await loading.present()
+                const userCredential = await signInWithCredential(this.auth, credential);
+                // Note: additionalUserInfo is not available in the new API
+                const data = new UserData(userCredential.user.displayName || '', userCredential.user.email || '', userCredential.user.photoURL || '')
+                const userDoc = doc(this.firestore, 'users', userCredential.user.email!);
+                await setDoc(userDoc, Object.assign({}, data));
+                loading.dismiss()
+                this.uiService.presentToast( "Connected successfully.", "success", 3000);
+                this.router.navigate(['/home'])
+            } else {
+                loading.dismiss()
+            }
         } catch (error: any) {
+            loading.dismiss()
             this.uiService.presentToast( error.message, "danger", 3000)
         }
     }
@@ -180,6 +185,8 @@ export class AuthService {
      */
     public async logout() {
         try {
+            await SocialLogin.logout({ provider: 'google' });
+            await FacebookLogin.logout();
             await signOut(this.auth);
             this.uiService.presentToast( "Logged out successfully.", "success", 3000);
             this.router.navigate(['/login'])

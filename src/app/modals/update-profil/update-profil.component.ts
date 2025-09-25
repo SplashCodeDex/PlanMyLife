@@ -4,7 +4,7 @@ import { UserService } from './../../services/user/user.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
-import firebase from "firebase";
+import { getAuth, updateProfile } from "firebase/auth";
 import { UserData } from 'src/app/models/userData';
 
 @Component({
@@ -46,23 +46,25 @@ export class UpdateProfilComponent implements OnInit {
     const lastName = this.dataForm.get('lastName').value;
     const phone = this.dataForm.get('phone').value;
     console.log(phone)
-    firebase.auth().currentUser.updateProfile({
-      displayName: (firstName + " " + lastName)
-    })
-    .then(() => {
-      const name = this.authService.getCurrentUser().displayName
-      const email = this.authService.getCurrentUser().email
-      const url = this.authService.getCurrentUser().photoURL
-      var user = new UserData(name, email, url)
-      if(phone)
-        user.phone = phone
-      this.userService.update(user)
-      this.dismissModal()
-    })
-    .catch((error) => {
-      this.uiService.presentToast( error.message, "danger", 3000)
-    })
-
+    const auth = getAuth();
+    if (auth.currentUser) {
+      updateProfile(auth.currentUser, {
+        displayName: (firstName + " " + lastName)
+      })
+      .then(() => {
+        const name = this.authService.getCurrentUser().displayName
+        const email = this.authService.getCurrentUser().email
+        const url = this.authService.getCurrentUser().photoURL
+        var user = new UserData(name, email, url)
+        if(phone)
+          user.phone = phone
+        this.userService.update(user)
+        this.dismissModal()
+      })
+      .catch((error) => {
+        this.uiService.presentToast( error.message, "danger", 3000)
+      })
+    }
   }
 
  /**

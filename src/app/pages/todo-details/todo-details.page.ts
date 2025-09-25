@@ -3,12 +3,11 @@ import {Todo} from "../../models/todo";
 import {ActivatedRoute} from "@angular/router";
 import {ListService} from "../../services/list/list.service";
 import {List} from "../../models/list";
-import {Settings} from "../../models/settings";
-import '@capacitor-community/text-to-speech';
-import { TTSOptions } from '@capacitor-community/text-to-speech';
-import {Geolocation, Plugins} from '@capacitor/core';
-import {SettingService} from "../../services/setting/setting.service";
-const { Device, TextToSpeech } = Plugins;
+import { Settings } from "../../models/settings";
+import { TTSOptions, TextToSpeech } from '@capacitor-community/text-to-speech';
+import { Geolocation } from '@capacitor/geolocation';
+import { Device } from '@capacitor/device';
+import { SettingService } from "../../services/setting/setting.service";
 
 import * as mapboxgl from 'mapbox-gl';
 import {environment} from "../../../environments/environment";
@@ -44,7 +43,7 @@ export class TodoDetailsPage implements OnInit {
               private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
-    mapboxgl.accessToken = environment.mapbox.accessToken;
+    (mapboxgl as any).accessToken = environment.mapbox.accessToken;
     this.settingService.getSettings().subscribe(value => this.settings = value)
     TextToSpeech.getSupportedVoices().then(result => this.supportedVoices = result.voices)
 
@@ -85,8 +84,8 @@ export class TodoDetailsPage implements OnInit {
     if(this.settings.textToSpeech){
       const options: TTSOptions = {
         text: text,
-        speechRate: this.settings.speechVolume,
-        pitchRate: 0.9,
+        rate: this.settings.speechVolume,
+        pitch: 0.9,
         volume: 1.0,
         voice: voice,  // supported only for WEB platforms
         category: 'ambient',
@@ -102,15 +101,14 @@ export class TodoDetailsPage implements OnInit {
   async initializeMap() {
     this.map = new mapboxgl.Map({
       container: 'map',
-      anchor: 'bottom',
       style: 'mapbox://styles/koppzer/ckm9xjp0r79m717pg93ozcp48',
       zoom: 13,
-      center: [this.todo.longitude, this.todo.latitude]
+      center: [parseFloat(this.todo.longitude), parseFloat(this.todo.latitude)]
     });
     this.map.addControl(new mapboxgl.NavigationControl());
     //Task coords
     new mapboxgl.Marker({  color: "#363636"  })
-        .setLngLat([this.longitude, this.latitude])
+        .setLngLat([parseFloat(this.longitude), parseFloat(this.latitude)])
         .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
         .setHTML('<h3>' + this.todo.address+ '</h3>'))
         .addTo(this.map);
@@ -122,7 +120,7 @@ export class TodoDetailsPage implements OnInit {
           .addTo(this.map);
     this.map.fitBounds([
       [this.mapService.userCoords.coords.longitude, this.mapService.userCoords.coords.latitude],
-      [this.todo.longitude, this.todo.latitude]
+      [parseFloat(this.todo.longitude), parseFloat(this.todo.latitude)]
       ]);
     }
   }

@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import {MenuController} from "@ionic/angular";
 import {StorageService} from "../../services/storage/storage.service";
 import {Router} from "@angular/router";
+import { register } from 'swiper/element/bundle'; // Import register
+
+register(); // Register Swiper custom elements
 
 @Component({
   selector: 'app-slides',

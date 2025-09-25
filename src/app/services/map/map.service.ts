@@ -1,6 +1,6 @@
 import { UiService } from './../ui/ui.service';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { GeoJson } from '../../models/map';

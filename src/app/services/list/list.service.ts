@@ -1,20 +1,17 @@
-import {Injectable, inject} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {List} from "../../models/list";
 import {Todo} from "../../models/todo";
 import {Firestore, collection, doc, setDoc, deleteDoc, updateDoc, onSnapshot, query, where, addDoc, getDocs} from "@angular/fire/firestore";
 import { getFirestore } from "firebase/firestore";
 import {combineLatest, Observable} from "rxjs";
-import {map} from "rxjs/operators";
 import {AuthService} from "../auth/auth.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ListService {
-  private firestore = inject(Firestore);
-  private authService = inject(AuthService);
-
-  constructor() {}
+  constructor(private firestore: Firestore,
+              private authService: AuthService) {}
 
   /**
    *  Get all lists
@@ -229,6 +226,14 @@ export class ListService {
       });
     }
     await this.updateProgress(list);
+  }
+
+  /**
+   *  Update a task from a list
+   */
+  public async updateTodo(list: List, todo: Todo){
+    const todoDocRef = doc(this.firestore, 'lists', list.id, 'todos', todo.id);
+    await updateDoc(todoDocRef, todo.toFirestore());
   }
 
   /**

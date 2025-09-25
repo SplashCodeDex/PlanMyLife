@@ -43,5 +43,28 @@ export class Todo {
         return this.id;
     }
 
-
+    // New method to convert to Firestore-compatible object
+    toFirestore() {
+        const data: any = {
+            title: this.title,
+            isDone: this.isDone,
+        };
+        if (this.description) {
+            data.description = this.description;
+        }
+        if (this.longitude) {
+            data.longitude = this.longitude;
+        }
+        if (this.latitude) {
+            data.latitude = this.latitude;
+        }
+        if (this.address) {
+            data.address = this.address;
+        }
+        if (this.date) {
+            data.date = this.date;
+        }
+        // Do not include 'id' when writing to Firestore, as it's the document ID
+        return data;
+    }
 }

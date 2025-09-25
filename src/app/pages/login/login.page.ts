@@ -3,7 +3,6 @@ import {MenuController, ModalController} from "@ionic/angular";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {PasswordRecoveryComponent} from "../../modals/password-recovery/password-recovery.component";
 import {AuthService} from "../../services/auth/auth.service";
-import '@codetrix-studio/capacitor-google-auth';
 
 @Component({
   selector: 'app-login',

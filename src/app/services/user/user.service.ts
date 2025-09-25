@@ -1,7 +1,6 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Firestore, collection, doc, updateDoc, onSnapshot } from '@angular/fire/firestore';
 import { Observable, combineLatest} from 'rxjs';
-import { map } from 'rxjs/operators';
 import { List } from 'src/app/models/list';
 import { UserData } from 'src/app/models/userData';
 
@@ -9,11 +8,10 @@ import { UserData } from 'src/app/models/userData';
   providedIn: 'root'
 })
 export class UserService {
-  private firestore = inject(Firestore);
   private usersCollection = collection(this.firestore, 'users');
   public users : UserData[]
 
-  constructor() {
+  constructor(private firestore: Firestore) {
     this.getAll().subscribe(value => this.users = value)
   }
 
@@ -27,7 +25,7 @@ export class UserService {
        const users: UserData[] = [];
        querySnapshot.forEach((docSnapshot) => {
          const data = docSnapshot.data();
-         users.push({ id: docSnapshot.id, ...data } as UserData);
+         users.push(new UserData(data['name'], data['email'], data['photoURL'], docSnapshot.id));
        });
        subscriber.next(users);
      });
@@ -63,7 +61,7 @@ export class UserService {
    */
   public update(data : UserData) : void{
     const userDoc = doc(this.firestore, 'users', data.email);
-    updateDoc(userDoc, Object.assign({}, data));
+    updateDoc(userDoc, data.toFirestore());
   }
 
 }

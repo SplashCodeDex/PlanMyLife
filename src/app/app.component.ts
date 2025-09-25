@@ -1,7 +1,5 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
-import { RouterOutlet } from '@angular/router';
-import { IonApp, IonRouterOutlet } from '@ionic/angular';
 import { AuthService } from './services/auth/auth.service';
 import { UiService } from './services/ui/ui.service';
 import { NotificationService } from './services/notification/notification.service';
@@ -10,16 +8,15 @@ import { FacebookLogin } from '@capacitor-community/facebook-login';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [IonApp, IonRouterOutlet, RouterOutlet],
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss']
 })
 export class AppComponent implements OnInit {
-  private platform = inject(Platform);
-  private uiService = inject(UiService);
-  private authService = inject(AuthService);
-  private notifService = inject(NotificationService);
+
+  constructor(private platform: Platform,
+              private uiService: UiService,
+              public authService: AuthService,
+              private notifService: NotificationService) {}
 
   ngOnInit() {
     this.initializeApp();

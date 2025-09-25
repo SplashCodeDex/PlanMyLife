@@ -1,12 +1,9 @@
 import { UiService } from './../../services/ui/ui.service';
-import { map } from 'rxjs/operators';
 import {Component, OnInit} from '@angular/core';
 import {SettingService} from "../../services/setting/setting.service";
 import {PickerController} from "@ionic/angular";
-import {Settings} from "../../models/settings";
-import '@capacitor-community/text-to-speech';
-import {Plugins} from '@capacitor/core';
-const { TextToSpeech } = Plugins;
+import { Settings } from "../../models/settings";
+import { TextToSpeech } from '@capacitor-community/text-to-speech';
 
 @Component({
   selector: 'app-settings',
