@@ -22,8 +22,6 @@ export class CreateListComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
-
   onSubmit(){
     this.listService.create(this.listForm.get('listName').value, this.authService.getCurrentUser().email);
     this.modalController.dismiss();

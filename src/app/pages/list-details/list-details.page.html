@@ -114,7 +114,7 @@
                 </ion-row>
             </ion-item>
             <!-- ITEM OPTIONS -->
-            <ion-item-options side="end" *ngIf="this.AuthService.getCurrentUser()?.email == this.list.owner">
+            <ion-item-options side="end" *ngIf="this.AuthService.getCurrentUser()?.email === this.list.owner">
                 <ion-item-option color="danger" (click)="removeMember(user?.email)">
                 <ion-icon slot="icon-only" name="trash"></ion-icon>
                 </ion-item-option>
