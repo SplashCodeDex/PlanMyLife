@@ -14,8 +14,6 @@ export class PasswordRecoveryComponent implements OnInit {
               private modalController: ModalController
               ) {}
 
-  ngOnInit() {}
-
   resetPassword(){
     this.authService.resetPassword(this.email)
   }

@@ -17,7 +17,7 @@ import { Settings } from '../models/settings';
     templateUrl: 'home.page.html',
     styleUrls: ['home.page.scss'],
 })
-export class HomePage {
+export class HomePage implements OnInit {
     private ownedLists: List[]
     private sharedLists: List[]
     public ownedResult: List[]

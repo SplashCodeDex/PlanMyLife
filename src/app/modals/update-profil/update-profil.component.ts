@@ -36,8 +36,6 @@ export class UpdateProfilComponent implements OnInit {
   });
   }
 
-  ngOnInit() {}
-
  /** 
   * 
   */

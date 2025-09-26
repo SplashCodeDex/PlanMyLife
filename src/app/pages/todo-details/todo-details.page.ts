@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef, AfterViewInit} from '@angular/core';
 import {Todo} from "../../models/todo";
 import {ActivatedRoute} from "@angular/router";
 import {ListService} from "../../services/list/list.service";
@@ -19,7 +19,7 @@ import {MapService} from "../../services/map/map.service";
   styleUrls: ['./todo-details.page.scss'],
 })
 
-export class TodoDetailsPage implements OnInit {
+export class TodoDetailsPage implements OnInit, AfterViewInit {
   /* Todolist fields*/
   public todo : Todo
   private list : List

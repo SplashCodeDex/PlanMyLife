@@ -21,7 +21,7 @@
 <ion-content [fullscreen]="true">
 
   <!-- NO LIST MESSAGE-->
-  <div style="height: 98%" *ngIf="this.ownedResult?.length == 0 && this.sharedResult?.length == 0">
+  <div style="height: 98%" *ngIf="this.ownedResult?.length === 0 && this.sharedResult?.length === 0">
     <ion-grid>
       <ion-row>
         <ion-icon style="margin-top: 2.5em" class="empty-icon" name="file-tray-full-outline"></ion-icon>
@@ -48,7 +48,7 @@
     <ion-item-sliding *ngFor="let list of ownedResult">
       <ion-item detail routerLink="/list-details/{{list.id}}">
         <ion-badge slot="end" color='yellow-light'
-                   [color]="(list.size==list.nbChecked && list.size >0) ? 'success' : 'warning'">
+                   [color]="(list.size===list.nbChecked && list.size >0) ? 'success' : 'warning'">
             {{list.nbChecked}}/{{list.size}}
         </ion-badge>
         <ion-label>
@@ -76,7 +76,7 @@
     <ion-item-sliding *ngFor="let list of sharedResult">
       <ion-item detail routerLink="/list-details/{{list.id}}">
         <ion-badge slot="end" color='yellow-light'
-                   [color]="(list.size==list.nbChecked && list.size >0) ? 'success' : 'warning'">
+                   [color]="(list.size===list.nbChecked && list.size >0) ? 'success' : 'warning'">
           {{list.nbChecked}}/{{list.size}}
         </ion-badge>
         <ion-label>
