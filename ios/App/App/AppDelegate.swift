@@ -1,7 +1,7 @@
 import UIKit
 import Capacitor
-import FacebookCore
 import FBSDKCoreKit
+import GoogleSignIn
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -10,8 +10,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-    FBSDKCoreKit.ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
-    // Override point for customization after application launch.
+    // Initialize Facebook SDK
+    ApplicationDelegate.shared.application(
+        application,
+        didFinishLaunchingWithOptions: launchOptions
+    )
     return true
   }
 
@@ -38,21 +41,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-    // Called when the app was launched with a url. Feel free to add additional processing here,
-    // but if you want the App API to support tracking app url opens, make sure to keep this call
-      if CAPBridge.handleOpenUrl(url, options) {
-         return FBSDKCoreKit.ApplicationDelegate.shared.application(app, open: url, options: options)
-      }
-      else{
-         return false
-      }
+    // Give FB and Google a chance to handle the URL before Capacitor
+    if ApplicationDelegate.shared.application(
+        app,
+        open: url,
+        sourceApplication: options[UIApplication.OpenURLOptionsKey.sourceApplication] as? String,
+        annotation: options[UIApplication.OpenURLOptionsKey.annotation]
+    ) || GIDSignIn.sharedInstance.handle(url) {
+        return true
+    }
+
+    // If not handled by social logins, let Capacitor handle it
+    return ApplicationDelegateProxy.shared.application(app, open: url, options: options)
   }
   
   func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
     // Called when the app was launched with an activity, including Universal Links.
-    // Feel free to add additional processing here, but if you want the App API to support
-    // tracking app url opens, make sure to keep this call
-    return CAPBridge.handleContinueActivity(userActivity, restorationHandler)
+    // If you are using Universal Links, you should keep this call
+    return ApplicationDelegateProxy.shared.application(application, continue: userActivity, restorationHandler: restorationHandler)
   }
 
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -79,4 +85,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 #endif
 
 }
-
