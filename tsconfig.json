@@ -20,5 +20,28 @@
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
     "strictInjectionParameters": true
-  }
+  },
+  "exclude": [
+    "src/app/app-routing.module.ts",
+    "src/app/app.module.ts",
+    "src/app/guards/slides.guard.ts",
+    "src/app/home/home-routing.module.ts",
+    "src/app/home/home.module.ts",
+    "src/app/pages/list-details/list-details-routing.module.ts",
+    "src/app/pages/list-details/list-details.module.ts",
+    "src/app/pages/login/login-routing.module.ts",
+    "src/app/pages/login/login.module.ts",
+    "src/app/pages/profil/profil-routing.module.ts",
+    "src/app/pages/profil/profil.module.ts",
+    "src/app/pages/register/register-routing.module.ts",
+    "src/app/pages/register/register.module.ts",
+    "src/app/pages/settings/settings-routing.module.ts",
+    "src/app/pages/settings/settings.module.ts",
+    "src/app/pages/slides/slides-routing.module.ts",
+    "src/app/pages/slides/slides.module.ts",
+    "src/app/pages/todo-details/todo-details-routing.module.ts",
+    "src/app/pages/todo-details/todo-details.module.ts",
+    "src/environments/environment.prod.ts",
+    "src/test.ts"
+  ]
 }

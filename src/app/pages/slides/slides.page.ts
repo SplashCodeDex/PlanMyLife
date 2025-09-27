@@ -17,9 +17,10 @@ export class SlidesPage implements OnInit {
               private menuCtrl: MenuController,
               private storageService : StorageService) {}
 
- 
+  ngOnInit() {}
+
   ionViewWillEnter() {
-    this.menuCtrl.enable(false); 
+    this.menuCtrl.enable(false);
   }
 
 

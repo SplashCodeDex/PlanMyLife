@@ -4,6 +4,7 @@
 		"TextToSpeechPlugin",
 		"CAPBrowserPlugin",
 		"CAPCameraPlugin",
+		"DevicePlugin",
 		"GeolocationPlugin",
 		"HapticsPlugin",
 		"LocalNotificationsPlugin",

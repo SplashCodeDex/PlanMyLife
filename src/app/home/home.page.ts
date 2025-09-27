@@ -1,5 +1,5 @@
 import { MapService } from './../services/map/map.service';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {List} from "../models/list";
 import {ListService} from "../services/list/list.service";
 import {AlertController, MenuController, IonRouterOutlet, ModalController} from "@ionic/angular";

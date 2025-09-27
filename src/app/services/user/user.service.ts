@@ -25,7 +25,11 @@ export class UserService {
        const users: UserData[] = [];
        querySnapshot.forEach((docSnapshot) => {
          const data = docSnapshot.data();
-         users.push(new UserData(data['name'], data['email'], data['photoURL'], docSnapshot.id));
+         const user = new UserData(data['name'], data['email'], data['photoURL'], docSnapshot.id);
+         if (data['phone']) {
+           user.phone = data['phone'];
+         }
+         users.push(user);
        });
        subscriber.next(users);
      });

@@ -41,6 +41,8 @@ export class ListSharingComponent implements OnInit {
 
   }
 
+  ngOnInit() {}
+
   onSubmit(){
     if(!(this.selectedUser.email == this.list.owner) && !(this.selectedUser.email == this.AuthService.getCurrentUser().email)){
         this.list.readers.push(this.selectedUser.email)
