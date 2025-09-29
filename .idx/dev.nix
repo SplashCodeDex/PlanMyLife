@@ -2,9 +2,12 @@
   channel = "stable-24.05";
   packages = [
     pkgs.nodejs_20
+    pkgs.haskellPackages.snap-templates
   ];
   idx.extensions = [
     "angular.ng-template"
+    "google.geminicodeassist"
+    "googlecloudtools.cloudcode"
   ];
   idx.previews = {
     previews = {
