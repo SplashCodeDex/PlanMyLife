@@ -3,6 +3,7 @@
   packages = [
     pkgs.nodejs_20
     pkgs.haskellPackages.snap-templates
+    pkgs.openssh 
   ];
   idx.extensions = [
     "angular.ng-template"
