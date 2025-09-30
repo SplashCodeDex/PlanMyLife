@@ -2,7 +2,7 @@ import { UiService } from './../ui/ui.service';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
+import { environment } from '@environments/environment';
 import { GeoJson } from '../../models/map';
 import { Geolocation } from '@capacitor/geolocation';
 import mapboxgl from 'mapbox-gl';

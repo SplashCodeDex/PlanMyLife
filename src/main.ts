@@ -7,7 +7,7 @@ import { register } from 'swiper/element/bundle';
 
 import { AppComponent } from './app/app.component';
 import { appConfig } from './app/app.config';
-import { environment } from './environments/environment';
+import { environment } from '@environments/environment';
 
 register();
 

@@ -10,7 +10,7 @@ import { Device } from '@capacitor/device';
 import { SettingService } from "../../services/setting/setting.service";
 
 import * as mapboxgl from 'mapbox-gl';
-import {environment} from "../../../environments/environment";
+import {environment} from "@environments/environment";
 import {MapService} from "../../services/map/map.service";
 
 @Component({
