@@ -47,11 +47,10 @@
       "command": "npx",
       "args": [
         "-y",
-        "@upstash/context7-mcp"
-      ],
-      "env": {
-        "DEFAULT_MINIMUM_TOKENS": ""
-      }
+        "@upstash/context7-mcp",
+        "--api-key",
+        "YOUR_API_KEY"
+      ]
     },
     "firebase": {
       "command": "npx",
@@ -64,6 +63,18 @@
         "--only",
         "auth,firestore,storage"
       ]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@latest"
+      ]
+    },
+    "Sentry": {
+      "url": "https://mcp.sentry.dev/mcp"
+    },
+    "gitmcp": {
+      "url": "https://gitmcp.io/docs"
     }
   }
 }
