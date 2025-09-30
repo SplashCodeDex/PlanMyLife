@@ -1,19 +1,30 @@
 { pkgs, ... }: {
-  channel = "stable-24.05";
+
+  # Which nixpkgs channel to use.
+  channel = "stable-23.11"; # or "unstable"
+
+  # Use https://search.nixos.org/packages to find packages
   packages = [
     pkgs.nodejs_20
-    pkgs.haskellPackages.snap-templates
-    pkgs.openssh
-    (pkgs.google-cloud-sdk.withExtraComponents [
-      pkgs.google-cloud-sdk.components.cloud-datastore-emulator
-    ])
+    pkgs.android-studio
+    pkgs.jdk
+    pkgs.gradle
+    pkgs.firebase-tools
   ];
+
+  # Sets environment variables in the workspace
+  env = {
+    FIREBASE_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnYiOiJwcm9kdWN0aW9uIiwia2lsb1VzZXJJZCI6Im9hdXRoL2dvb2dsZToxMDMxMjMzNTQzMzA1NTA0MzkwNzEiLCJhcGlUb2tlblBlcHBlciI6bnVsbCwidmVyc2lvbiI6MywiaWF0IjoxNzU4OTM1NzU3LCJleHAiOjE5MTY3MjM3NTd9.4FhuJrCZzcMnbmHDFuJX286RNzRMUAgsVMJNrdInNbU";
+  };
+
+  # Search for the extensions you want on https://open-vsx.org/ and use "publisher.id"
   idx.extensions = [
     "angular.ng-template"
-    "google.geminicodeassist"
-    "googlecloudtools.cloudcode"
   ];
+
+  # Enable previews and customize configuration
   idx.previews = {
+    enable = true;
     previews = {
       web = {
         command = [
@@ -28,14 +39,10 @@
           "--disable-host-check"
         ];
         manager = "web";
+        cwd = "www";
       };
       android = {
-        command = [
-          "sh"
-          "-c"
-          "npm i && npx @capacitor/android@5.7.4 && npm i -D @capacitor/cli@5.7.4 && npx cap add android && npx cap sync android && npx cap open android"
-        ];
-        manager = "process";
+        manager = "android";
       };
     };
   };
