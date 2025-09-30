@@ -59,7 +59,7 @@
         "firebase-tools@latest",
         "experimental:mcp",
         "--dir",
-        "/home/user/SplashCodeDeX/personal-platform",
+        "/home/user/PlanMyLife",
         "--only",
         "auth,firestore,storage"
       ]

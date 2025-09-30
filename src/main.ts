@@ -2,7 +2,6 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { provideServiceWorker } from '@angular/service-worker';
 import { provideHttpClient } from '@angular/common/http';
 import { provideZoneChangeDetection } from '@angular/core';
-import { defineCustomElements } from '@ionic/pwa-elements/loader';
 import { register } from 'swiper/element/bundle';
 
 import { AppComponent } from './app/app.component';
@@ -27,5 +26,3 @@ bootstrapApplication(AppComponent, {
     })
   ]
 }).catch(err => console.error(err));
-
-defineCustomElements(window);

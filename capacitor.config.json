@@ -11,9 +11,6 @@
       "google": {
         "webClientId": "155073571358-ptrk4bmckhhl3uifi3frl9n4h7eejjc3.apps.googleusercontent.com"
       }
-    },
-    "Keyboard": {
-      "style": "dark"
     }
   },
   "cordova": {}
