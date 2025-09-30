@@ -33,6 +33,8 @@ export class CreateTodoComponent implements OnInit {
     });
   }
 
+  ngOnInit() {}
+
   onSubmit(){
     const name = this.todoForm.get('name').value;
     const description = this.todoForm.get('description').value;
