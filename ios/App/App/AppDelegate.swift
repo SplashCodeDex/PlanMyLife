@@ -2,6 +2,7 @@ import UIKit
 import Capacitor
 import FacebookCore
 import FBSDKCoreKit
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -12,6 +13,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     FBSDKCoreKit.ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
     // Override point for customization after application launch.
+
+    FirebaseApp.configure()
+
+    #if DEBUG
+      let settings = Firestore.firestore().settings
+      settings.host = "127.0.0.1:8080"
+      settings.isSSLEnabled = false
+      Firestore.firestore().settings = settings
+
+      Auth.auth().useEmulator(withHost:"127.0.0.1", port:9099)
+      Storage.storage().useEmulator(withHost: "127.0.0.1", port: 9199)
+    #endif
+
     return true
   }
 
@@ -79,4 +93,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 #endif
 
 }
-

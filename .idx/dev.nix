@@ -39,7 +39,6 @@
           "--disable-host-check"
         ];
         manager = "web";
-        cwd = "www";
       };
       android = {
         manager = "android";

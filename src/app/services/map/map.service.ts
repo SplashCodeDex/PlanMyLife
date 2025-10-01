@@ -25,7 +25,7 @@ export class MapService {
 
   constructor(private http: HttpClient,
               private uiService: UiService) {
-    mapboxgl.accessToken = environment.mapbox.accessToken;
+    mapboxgl.accessToken = environment.mapbox;
   }
 
   async initCurrentPosition() {
@@ -40,7 +40,7 @@ export class MapService {
 
   public search_word(query: string) {
     const url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
-    return this.http.get(url + query + '.json?&access_token='+ environment.mapbox.accessToken)
+    return this.http.get(url + query + '.json?&access_token='+ environment.mapbox)
         .pipe(
             map((res: MapboxOutput) => {
                 return res.features;
@@ -52,7 +52,7 @@ export class MapService {
   public search_directions(startLong, startLat, endLong, endLat) {
     const url = 'https://api.mapbox.com/directions/v5/mapbox/driving/';
     const params = startLong + ',' + startLat + ';' + endLong + ',' + endLat
-    return this.http.get(url + params + '?steps=true&geometries=geojson&access_token='+ environment.mapbox.accessToken)
+    return this.http.get(url + params + '?steps=true&geometries=geojson&access_token='+ environment.mapbox)
         .pipe(
             map((res) => {
                 //console.log(res)

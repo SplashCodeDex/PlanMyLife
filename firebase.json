@@ -35,17 +35,45 @@
   },
   "emulators": {
     "auth": {
-      "port": 9099
+      "port": 9099,
+      "host": "127.0.0.1"
     },
     "firestore": {
-      "port": 8080
+      "port": 8080,
+      "host": "127.0.0.1",
+      "rules": "firestore.rules"
     },
     "storage": {
       "port": 9199,
-      "rules": "storage.rules"
+      "rules": "storage.rules",
+      "host": "127.0.0.1"
     },
     "ui": {
-      "enabled": true
+      "enabled": true,
+      "host": "127.0.0.1"
+    },
+    "functions": {
+      "port": 5001,
+      "host": "127.0.0.1"
+    },
+    "hub": {
+      "port": 4400,
+      "host": "127.0.0.1"
+    },
+    "logging": {
+      "port": 4500,
+      "host": "127.0.0.1"
+    },
+    "eventarc": {
+      "port": 9299,
+      "host": "127.0.0.1"
     }
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "storage": {
+    "rules": "storage.rules"
   }
 }

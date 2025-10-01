@@ -43,7 +43,7 @@ export class TodoDetailsPage implements OnInit, AfterViewInit {
               private activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
-    (mapboxgl as any).accessToken = environment.mapbox.accessToken;
+    (mapboxgl as any).accessToken = environment.mapbox;
     this.settingService.getSettings().subscribe(value => this.settings = value)
     TextToSpeech.getSupportedVoices().then(result => this.supportedVoices = result.voices)
 
