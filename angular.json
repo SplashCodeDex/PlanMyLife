@@ -16,7 +16,7 @@
             "allowedCommonJsDependencies": [
               "mapbox-gl"
             ],
-            "outputPath": "www",
+            "outputPath": "Public",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
