@@ -91,3 +91,5 @@ src/assets/icons
 .env.local
 .env.productiong-cloud-key.json
 g-cloud-key.json
+/node_modules
+**/node_modules
