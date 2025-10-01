@@ -89,4 +89,5 @@ src/assets/icons
 # Environment files
 .env
 .env.local
-.env.production
+.env.productiong-cloud-key.json
+g-cloud-key.json
